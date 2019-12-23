@@ -12,6 +12,7 @@ Checkout and run `sbt publishLocal`.
 
 Add sbt-xtext-plugin as a dependency in `project/plugins.sbt`
 
+    resolvers += Resolver.bintrayIvyRepo("idiomaticsoft", "sbt-plugins")
     addSbtPlugin("com.idiomaticsoft" % "sbt-xtext-plugin" % "0.1.0")
 
 ## Integrating Xtext Generators to Your Project
@@ -29,6 +30,8 @@ Sbt Xtext allows to register your Xtext languages using the `sbtXtextLanguageCon
 
 ```
 // build.sbt
+import sbtxtext._
+
 sbtXtextLanguageConfigurations := Seq(
   new Language("com.idiomaticsoft.dsl.TestStandaloneSetup")
 )
