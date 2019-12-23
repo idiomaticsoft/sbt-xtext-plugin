@@ -103,10 +103,8 @@ object SbtXtextPlugin extends AutoPlugin {
       val resourceSet = injector.getInstance(classOf[XtextResourceSet])
       val issueHandler = injector.getInstance(classOf[IIssueHandler])
       var rootsToTravers = classPathEntries.map(_.data.getAbsolutePath())
-      logger.info("rootsToTravers = " + rootsToTravers.mkString(", "))
       val sourceDirs =
         (Compile / unmanagedSourceDirectories).value.map(_.getAbsolutePath())
-      logger.info("sourceDirs = " + sourceDirs.mkString(", "))
       val sourceResourceURIs = collectResources(
         languages,
         sourceDirs,
@@ -123,12 +121,11 @@ object SbtXtextPlugin extends AutoPlugin {
       val allClassPathEntries = (sourceDirs ++ rootsToTravers)
       val index = new ResourceDescriptionsData(new ju.ArrayList())
       allResourcesURIs.foreach(uri => {
-        logger.info("Getting resource from URI: " + uri.toString())
         val resource = resourceSet.getResource(uri, true)
         fillIndex(languages, uri, resource, index)
       })
       installIndex(resourceSet, index)
-      streams.value.log.info("Validate and generate.")
+      logger.info("Validate and generate.")
       val (didValidate, validatedResources) = sourceResourceURIs
         .map((uri) => {
           val resource = resourceSet.getResource(uri, true)
@@ -307,7 +304,6 @@ object SbtXtextPlugin extends AutoPlugin {
     modelsFound.asMap.asScala.foreach(e => {
       val (uri, resource) = e
       val file = new File(uri)
-      logger.info(s"registering bundle? ${file.getAbsolutePath()}")
       if (Option(resource).isDefined && !(file.isDirectory()) && file.name
             .endsWith(".jar")) {
         registerBundle(file, logger)
