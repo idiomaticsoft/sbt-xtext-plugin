@@ -196,7 +196,7 @@ object SbtXtextPlugin extends AutoPlugin {
       fileSystemAccess.setCallBack(new IFileCallback {
         def fileAdded(file: File): Unit = {
 			if (file.ext == "scala") {
- 
+ 				generatedFiles.add(file)
 			}
         }
         def fileDeleted(file: File): Unit = generatedFiles.remove(file)
